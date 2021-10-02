@@ -25,6 +25,17 @@ const ProductController = (function(){
         getData: function(){
             return data;
         },
+
+        getProductById: function(id){
+            let product = null;
+            
+            data.products.forEach(function(prd){
+                if(prd.id == id){
+                    product = prd;
+                }
+            })
+            return product;
+        },
         addProduct: function(name,price){
             let id ;
             if(data.products.length>0){
@@ -76,9 +87,8 @@ const UIController = (function(){
                 <td>${prd.name}</td>
                 <td>${prd.price}</td>
                 <td class="text-right">
-                    <button type="submit" class="btn btn-warning btn-sm">
-                        <i class="far fa-edit"></i>
-                    </button>
+               <i class="far fa-edit edit-product"></i>
+                    
                 </td>
                 
             
@@ -98,9 +108,8 @@ const UIController = (function(){
             <td>${prd.name}</td>
             <td>${prd.price} $</td>
             <td class="text-right">
-                <button type="submit" class="btn btn-warning btn-sm">
-                    <i class="far fa-edit"></i>
-                </button>
+            <i class="far fa-edit edit-product"></i>
+                
             </td>
             
         
@@ -127,6 +136,7 @@ const App = (function(ProductCtrl,UICtrl){
     const loadEventListeners = function(){
         document.querySelector(UISelectors.addButton).addEventListener('click',productAddSubmit);
         
+        document.querySelector(UISelectors.productList).addEventListener('click',productEditSubmit);
     }
 
     const productAddSubmit = function(e){
@@ -146,6 +156,17 @@ const App = (function(ProductCtrl,UICtrl){
          
         }
        
+        e.preventDefault();
+    }
+
+    const productEditSubmit = function(e){
+
+        if(e.target.classList.contains('edit-product')){
+            
+            const id = e.target.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+
+           const product = ProductCtrl.getProductById(id);
+        }
         e.preventDefault();
     }
 
